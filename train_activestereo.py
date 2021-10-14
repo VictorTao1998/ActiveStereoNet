@@ -288,10 +288,11 @@ def main_worker(gpu, ngpus_per_node, args, cfg, logger):
 
             if main_process(args):
                 #logger.info('%s: %s' % (args.savemodel.strip('/').split('/')[-1], args.devices))
-                logger.info('Epoch %d Iter %d/%d training loss = %.3f , time = %.2f; Epoch time: %.3fs, Left time: %.3fs, lr: %.6f' % (
-                    epoch, 
-                    batch_idx, len(TrainImgLoader), loss, time.time() - start_time, (time.time() - start_time) * len(TrainImgLoader), 
-                    (time.time() - start_time) * (len(TrainImgLoader) * (args.epochs - epoch) - batch_idx), optimizer.param_groups[0]["lr"]) )
+                if batch_idx%args.log_freq == 0:
+                    logger.info('Epoch %d Iter %d/%d training loss = %.3f , time = %.2f; Epoch time: %.3fs, Left time: %.3fs, lr: %.6f' % (
+                        epoch, 
+                        batch_idx, len(TrainImgLoader), loss, time.time() - start_time, (time.time() - start_time) * len(TrainImgLoader), 
+                        (time.time() - start_time) * (len(TrainImgLoader) * (args.epochs - epoch) - batch_idx), optimizer.param_groups[0]["lr"]) )
                 #logger.info('losses: {}'.format(list(losses.items())))
                 #for lk, lv in losses.items():
                 #    writer.add_scalar(lk, lv, epoch * len(TrainImgLoader) + batch_idx)
@@ -314,10 +315,11 @@ def main_worker(gpu, ngpus_per_node, args, cfg, logger):
 
             if main_process(args):
                 #logger.info('%s: %s' % (args.savemodel.strip('/').split('/')[-1], args.devices))
-                logger.info('Epoch %d Iter %d/%d training loss = %.3f , time = %.2f; Epoch time: %.3fs, Left time: %.3fs, lr: %.6f' % (
-                    epoch, 
-                    batch_idx, len(TrainImgLoader), loss, time.time() - start_time, (time.time() - start_time) * len(TrainImgLoader), 
-                    (time.time() - start_time) * (len(TrainImgLoader) * (args.epochs - epoch) - batch_idx), optimizer.param_groups[0]["lr"]) )
+                if batch_idx%args.log_freq == 0:
+                    logger.info('Epoch %d Iter %d/%d validation loss = %.3f , time = %.2f; Epoch time: %.3fs, Left time: %.3fs, lr: %.6f' % (
+                        epoch, 
+                        batch_idx, len(TrainImgLoader), loss, time.time() - start_time, (time.time() - start_time) * len(TrainImgLoader), 
+                        (time.time() - start_time) * (len(TrainImgLoader) * (args.epochs - epoch) - batch_idx), optimizer.param_groups[0]["lr"]) )
                 #logger.info('losses: {}'.format(list(losses.items())))
                 #for lk, lv in losses.items():
                 #    writer.add_scalar(lk, lv, epoch * len(TrainImgLoader) + batch_idx)
@@ -336,6 +338,7 @@ def main_worker(gpu, ngpus_per_node, args, cfg, logger):
             logger.info('Snapshot {} epoch in {}'.format(epoch, args.logdir))
 
             if total_val_loss/len(ValImgLoader) < best_loss:
+                best_loss = total_val_loss/len(ValImgLoader)
                 savefilename = args.logdir + '/finetune_best.tar'
                 torch.save({
                     'epoch': epoch,
