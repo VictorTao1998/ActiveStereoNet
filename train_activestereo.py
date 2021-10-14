@@ -303,7 +303,7 @@ def main_worker(gpu, ngpus_per_node, args, cfg, logger):
         for batch_idx, sample in enumerate(ValImgLoader):
             start_time = time.time()
 
-            scalar_outputs_psmnet, img_outputs_psmnet = train(model, cfg, args, optimizer, sample, critiron)
+            scalar_outputs_psmnet, img_outputs_psmnet = test(model, cfg, args, optimizer, sample, critiron)
             loss = scalar_outputs_psmnet['epe loss']
             
             if batch_idx%args.log_freq == 0:
