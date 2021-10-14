@@ -384,11 +384,15 @@ def train(model, cfg, args, optimizer, sample, critiron):
 
     # outputs = model(imgL, imgR, disp_L)
 
-    optimizer.zero_grad()
+    
     disp_pred_L, disp_pred_R = model(img_L, img_R)
     #outputs = [torch.unsqueeze(output, 1) for output in outputs]
 
     loss = critiron(img_L, img_R, disp_pred_L[:,0,:,:])
+    #print(disp_gt.shape)
+    #loss2 = critiron(img_L, img_R, disp_gt[:,0,:,:])
+    #print('compare: ', loss.item(), loss2.item())
+    optimizer.zero_grad()
     loss.backward()
     optimizer.step()
 
