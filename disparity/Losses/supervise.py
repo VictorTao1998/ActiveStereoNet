@@ -45,6 +45,7 @@ class XTLoss(nn.Module):
 
     
     def forward(self, left_img, right_img, dispmap):
+        #print(left_img.shape, right_img.shape, dispmap.shape)
 
         n, c, h, w = left_img.shape
         
@@ -122,5 +123,6 @@ class XTLoss(nn.Module):
 
         return CostASW.mean()
 
-
+if __name__ == '__main__':
+    main()
         

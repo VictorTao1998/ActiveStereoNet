@@ -388,7 +388,7 @@ def train(model, cfg, args, optimizer, sample, critiron):
     disp_pred_L, disp_pred_R = model(img_L, img_R)
     #outputs = [torch.unsqueeze(output, 1) for output in outputs]
 
-    loss = critiron(img_L, img_R, disp_pred_L)
+    loss = critiron(img_L, img_R, disp_pred_L[:,0,:,:])
     loss.backward()
     optimizer.step()
 
@@ -477,7 +477,7 @@ def test(model, cfg, args, optimizer, sample, critiron):
 
     train_EPE_left = EPE_metric(disp_pred_L[0], disp_gt[0], mask[0])
 
-    scalar_outputs_psmnet = {'epe loss': train_EPE_left.item(), 'network loss': loss.item()}
+    scalar_outputs_psmnet = {'epe loss': train_EPE_left.item()}
 
     err_metrics = compute_err_metric(disp_gt, depth_gt, disp_pred_L, img_focal_length, img_baseline, mask)
     scalar_outputs_psmnet.update(err_metrics)
