@@ -271,7 +271,7 @@ class Active_StereoNet(nn.Module):
 
 
 
-        return Full_res_disparityL, Full_res_disparityR,  Full_res_disparityR
+        return Full_res_disparityL, Full_res_disparityR
         # return Full_res_disparityL, Full_res_disparityL,Full_res_disparityL
 
 
