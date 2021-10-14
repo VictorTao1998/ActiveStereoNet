@@ -7,7 +7,7 @@ import numpy as np
 import torch
 import torch.nn.functional as F
 
-from utils.reduce import make_nograd_func
+from disparity.util.reduce import make_nograd_func
 
 
 # Error metric for messy-table-dataset

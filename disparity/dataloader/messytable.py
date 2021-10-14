@@ -11,8 +11,8 @@ import torch
 import torchvision.transforms as Transforms
 from torch.utils.data import Dataset
 
-from utils.config import cfg
-from utils.util import load_pickle
+from disparity.util.config import cfg
+from disparity.util.util import load_pickle
 
 
 class MessytableDataset(Dataset):
@@ -122,8 +122,8 @@ class MessytableDataset(Dataset):
         #print(self.img_L, np.array(Image.open(self.img_L[idx]).convert('RGB')).shape)
         #print(np.array(Image.open(self.img_L[idx])).shape, np.array(Image.open(self.img_L[idx]).convert('RGB')).shape, np.array(Image.open(self.img_L[idx]).convert('RGB').resize((540,960))).shape)
         #print(np.array(Image.open(self.img_L[idx])).shape)  
-        img_L_rgb = Image.open(self.img_L[idx]).convert('RGB')   # [H, W, 1], in (0, 1)
-        img_R_rgb = Image.open(self.img_R[idx]).convert('RGB')
+        img_L_rgb = Image.open(self.img_L[idx]).convert('L')   # [H, W, 1], in (0, 1)
+        img_R_rgb = Image.open(self.img_R[idx]).convert('L')
         L_a = np.array(img_L_rgb)
         R_a = np.array(img_R_rgb)
         #print(L_a[0,0,1]==R_a[0,0,4])
@@ -136,7 +136,7 @@ class MessytableDataset(Dataset):
 
         # For unpaired pix2pix, load a random real image from real dataset [H, W, 1], in value range (-1, 1)
         #print(np.array(Image.open(random.choice(self.img_sim)).convert('RGB')).shape)
-        img_sim_rgb = Image.open(random.choice(self.img_sim)).convert('RGB')
+        img_sim_rgb = Image.open(random.choice(self.img_sim)).convert('L')
         #print(img_sim_rgb.shape)
 
         #img_L_rgb, img_R_rgb, img_sim_rgb = process(img_L_rgb), process(img_R_rgb), process(img_sim_rgb)
@@ -184,7 +184,7 @@ class MessytableDataset(Dataset):
         
 
         item = {}
-
+        #print(img_L_rgb.shape)
         item['img_L'] = img_L_rgb  # [bs, 1, H, W]
         item['img_R'] = img_R_rgb  # [bs, 1, H, W]
         item['img_sim'] = img_sim_rgb  # [bs, 3, 2*H, 2*W]

@@ -1,6 +1,6 @@
 import torch
 import torch.nn.functional as F
-from utils.experiment import make_nograd_func
+from disparity.util.reduce import make_nograd_func
 from torch.autograd import Variable
 from torch import Tensor
 
@@ -21,6 +21,7 @@ def check_shape_for_metric_computation(*vars):
 # a wrapper to compute metrics for each image individually
 def compute_metric_for_each_image(metric_func):
     def wrapper(D_ests, D_gts, masks, *nargs):
+        #print('metric: ', D_ests.shape, D_gts.size(), masks.size())
         check_shape_for_metric_computation(D_ests, D_gts, masks)
         bn = D_gts.shape[0]  # batch size
         results = []  # a list to store results for each image

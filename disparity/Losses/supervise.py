@@ -38,8 +38,8 @@ class XTLoss(nn.Module):
             [[1, 0, 0],  # 控制左右，-右，+左
             [0, 1, 0]]    # 控制上下，-下，+上
         )
-        self.inplanes = 3
-        self.outplanes = 3
+        self.inplanes = 1
+        self.outplanes = 1
         
 
 
